@@ -108,10 +108,11 @@ benchmark = benchmark_options[selected_benchmark]
 # Selección de la ventana de tiempo
 end_date = datetime.now()
 start_date_options = {
-    "1 mes": end_date - timedelta(days=31),
-    "3 meses": end_date - timedelta(days=92),
-    "6 meses": end_date - timedelta(days=183),
-    "1 año": end_date - timedelta(days=366),
+    "1 mes": end_date - timedelta(days=30),
+    "3 meses": end_date - timedelta(days=91),
+    "6 meses": end_date - timedelta(days=182),
+    "1 año": end_date - timedelta(days=365),
+    "2 años": end_date - timedelta(days=2*365)
 }
 selected_window = st.sidebar.selectbox("Seleccione la ventana de tiempo para el análisis:", list(start_date_options.keys()))
 start_date = start_date_options[selected_window]
@@ -219,7 +220,7 @@ else:
 
         # Rendimientos y métricas de riesgo en diferentes ventanas de tiempo
         st.subheader("Rendimientos y Métricas de Riesgo en Diferentes Ventanas de Tiempo")
-        ventanas = [30, 90, 180, 365]
+        ventanas = [30, 90, 180, 365, 728]
         
         # Crear DataFrames separados para cada métrica
         rendimientos_ventanas = pd.DataFrame(index=['Portafolio'] + simbolos + [selected_benchmark])
