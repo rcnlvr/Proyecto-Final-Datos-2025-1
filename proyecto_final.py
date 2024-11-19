@@ -49,11 +49,11 @@ def calcular_var_montecarlo(returns, num_simulaciones=1000, horizonte=1, confian
     VaR_montecarlo = np.percentile(simulaciones_horizonte, (1 - confianza) * 100)
     return VaR_montecarlo
 
-def calcular_var_montecarlo_ventana(returns, num_simulaciones=1000, horizonte=1, confianza=0.95, window=252):
+def calcular_var_montecarlo_ventana(returns, window):
     if len(returns) < window:
         return np.nan
     window_returns = returns.iloc[-window:]
-    return calcular_var_montecarlo(window_returns, num_simulaciones, horizonte, confianza)
+    return calcular_var_montecarlo(window_returns)
 
 def crear_histograma_distribucion(returns, var_95, title):
     # Crear el histograma base
