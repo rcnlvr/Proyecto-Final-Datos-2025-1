@@ -220,8 +220,7 @@ else:
 
         # Rendimientos y métricas de riesgo en diferentes ventanas de tiempo
         st.subheader("Rendimientos y Métricas de Riesgo en Diferentes Ventanas de Tiempo")
-        año = 360
-        ventanas = [30, 90, 180, año]
+        ventanas = [30, 90, 180, 350]
         
         # Crear DataFrames separados para cada métrica
         rendimientos_ventanas = pd.DataFrame(index=['Portafolio'] + simbolos + [selected_benchmark])
