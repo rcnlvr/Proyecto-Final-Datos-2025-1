@@ -183,8 +183,8 @@ else:
         portfolio_var_95 = calcular_var(portfolio_returns)
 
         col1, col2 = st.columns(2)
-        col2.metric("Rendimiento Total del Portafolio", f"{portfolio_cumulative_returns.iloc[-1]:.2%}")
-        col4.metric("VaR 95% del Portafolio", f"{portfolio_var_95:.2%}")
+        col1.metric("Rendimiento Total del Portafolio", f"{portfolio_cumulative_returns.iloc[-1]:.2%}")
+        col2.metric("VaR 95% del Portafolio", f"{portfolio_var_95:.2%}")
 
         # Gráfico de rendimientos acumulados del portafolio vs benchmark
         fig_cumulative = go.Figure()
