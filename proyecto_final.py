@@ -39,7 +39,7 @@ def calcular_var_ventana(returns, window):
 # Función para calcular el VaR usando el método de Montecarlo
 def calcular_var_montecarlo(returns, num_simulaciones=1000, horizonte=1, confianza=0.95):
     media = returns.mean()
-    cov_matrix = returns.cov()
+    cov_matrix = returns.to_frame().cov()
     # Simulaciones de Montecarlo
     simulaciones = np.random.multivariate_normal(media, cov_matrix, num_simulaciones)
     # Calcular los rendimientos simulados para el horizonte de tiempo especificado
