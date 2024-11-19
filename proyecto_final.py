@@ -36,20 +36,14 @@ def calcular_var_ventana(returns, window):
     window_returns = returns.iloc[-window:]
     return calcular_var(window_returns)
 
-# Función para calcular el VaR usando el método de Montecarlo
-def calcular_var_montecarlo(returns, num_simulaciones=1000, horizonte=1, confianza=0.95):
-    media = returns.mean()
-    cov_matrix = returns.to_frame().cov()
-    # Simulaciones de Montecarlo
-    simulaciones = np.random.multivariate_normal(media, cov_matrix, num_simulaciones)
-    # Calcular los rendimientos simulados para el horizonte de tiempo especificado
-    simulaciones_df = pd.DataFrame(simulaciones)
-    simulaciones_horizonte = simulaciones_df.apply(lambda x: np.prod(1 + x[:horizonte]) - 1, axis=1)
-    # Calcular el VaR a partir de las simulaciones
-    VaR_montecarlo = np.percentile(simulaciones_horizonte, (1 - confianza) * 100)
-    return VaR_montecarlo
+# Función para calcular VaR usando simulación de Monte Carlo
+def calcular_var_montecarlo(returns, confidence_level=0.95, num_simulations=1000):
+    simulated_returns = np.random.choice(returns, size=(num_simulations, len(returns)))
+    portfolio_returns = np.sum(simulated_returns, axis=1)
+    var_montecarlo = np.percentile(portfolio_returns, (1 - confidence_level) * 100)
+    return var_montecarlo
 
-def calcular_var_montecarlo_ventana(returns, window):
+def var_montecarlo_ventana(returns, window):
     if len(returns) < window:
         return np.nan
     window_returns = returns.iloc[-window:]
