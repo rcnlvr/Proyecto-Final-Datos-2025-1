@@ -109,8 +109,8 @@ benchmark = benchmark_options[selected_benchmark]
 end_date = datetime.now()
 start_date_options = {
     "1 mes": end_date - timedelta(days=30),
-    "3 meses": end_date - timedelta(days=91),
-    "6 meses": end_date - timedelta(days=182),
+    "3 meses": end_date - timedelta(days=90),
+    "6 meses": end_date - timedelta(days=180),
     "1 año": end_date - timedelta(days=365),
 }
 selected_window = st.sidebar.selectbox("Seleccione la ventana de tiempo para el análisis:", list(start_date_options.keys()))
