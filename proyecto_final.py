@@ -36,13 +36,18 @@ def calcular_var_ventana(returns, window):
     window_returns = returns.iloc[-window:]
     return calcular_var(window_returns)
 
-# Función para calcular VaR usando simulación de Monte Carlo
+# Función para calcular VaR usando simulación de Monte Carlo con valores normalizados
 def calcular_var_montecarlo(returns, confidence_level=0.95, num_simulations=10000):
-    simulated_returns = np.random.choice(returns, size=(num_simulations, len(returns)))
+    mean_return = np.mean(returns)
+    std_dev_return = np.std(returns)
+    # Generar muestras aleatorias de los retornos normalizados
+    simulated_returns = np.random.normal(mean_return, std_dev_return, (num_simulations, len(returns)))
+    # Calcular los retornos del portafolio para cada simulación
     portfolio_returns = np.sum(simulated_returns, axis=1)
-    var_montecarlo = (np.percentile(portfolio_returns, (1 - confidence_level)*100))
-    return var_montecarlo
-
+    # Calcular el VaR al nivel de confianza especificado
+    var = np.percentile(portfolio_returns, (1 - confidence_level) * 100)
+    return var
+    
 def var_montecarlo_ventana(returns, window):
     if len(returns) < window:
         return np.nan
