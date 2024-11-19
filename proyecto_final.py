@@ -40,7 +40,7 @@ def calcular_var_ventana(returns, window):
 def calcular_var_montecarlo(returns, confidence_level=0.95, num_simulations=100):
     simulated_returns = np.random.choice(returns, size=(num_simulations, len(returns)))
     portfolio_returns = np.sum(simulated_returns, axis=1)
-    var_montecarlo = np.percentile(portfolio_returns, (1 - confidence_level)*100)
+    var_montecarlo = np.quantile(portfolio_returns, (1 - confidence_level))
     return var_montecarlo
 
 def var_montecarlo_ventana(returns, window):
