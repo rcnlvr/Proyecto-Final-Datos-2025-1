@@ -36,6 +36,25 @@ def calcular_var_ventana(returns, window):
     window_returns = returns.iloc[-window:]
     return calcular_var(window_returns)
 
+# Función para calcular el VaR usando el método de Montecarlo
+def calcular_var_montecarlo(returns, num_simulaciones=1000, horizonte=1, confianza=0.95):
+    media = returns.mean()
+    cov_matrix = returns.cov()
+    # Simulaciones de Montecarlo
+    simulaciones = np.random.multivariate_normal(media, cov_matrix, num_simulaciones)
+    # Calcular los rendimientos simulados para el horizonte de tiempo especificado
+    simulaciones_df = pd.DataFrame(simulaciones)
+    simulaciones_horizonte = simulaciones_df.apply(lambda x: np.prod(1 + x[:horizonte]) - 1, axis=1)
+    # Calcular el VaR a partir de las simulaciones
+    VaR_montecarlo = np.percentile(simulaciones_horizonte, (1 - confianza) * 100)
+    return VaR_montecarlo
+
+def calcular_var_montecarlo_ventana(returns, num_simulaciones=1000, horizonte=1, confianza=0.95, window=252):
+    if len(returns) < window:
+        return np.nan
+    window_returns = returns.iloc[-window:]
+    return calcular_var_montecarlo(window_returns, num_simulaciones, horizonte, confianza)
+
 def crear_histograma_distribucion(returns, var_95, title):
     # Crear el histograma base
     fig = go.Figure()
