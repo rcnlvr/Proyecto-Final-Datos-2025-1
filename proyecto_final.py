@@ -26,15 +26,33 @@ def calcular_rendimiento_ventana(returns, window):
     return (1 + returns.iloc[-window:]).prod() - 1
 
 # Nuevas funciones para VaR y CVaR
-def calcular_var(returns, confidence=0.95):
-    VaR = returns.quantile(1 - confidence)
+def calcular_var_historico(returns, confidence=0.95):
+    # Calcular los rendimientos del portafolio como la suma ponderada de los rendimientos individuales
+    portafolio_returns = returns.sum(axis=1)
+    # Calcular el VaR del portafolio
+    VaR = portafolio_returns.quantile(1 - confidence)
     return VaR
 
-def calcular_var_ventana(returns, window):
+def var_historico_ventana(returns, window):
     if len(returns) < window:
         return np.nan
     window_returns = returns.iloc[-window:]
-    return calcular_var(window_returns)
+    return calcular_var_historico(window_returns)
+
+def calcular_var_analitico(returns, confidence=0.95):
+    # Media y desviación estándar de los rendimientos del portafolio
+    media = returns.mean().sum()
+    desviacion_estandar = returns.std().sum()
+    # Cálculo del VaR usando la distribución normal
+    z_score = norm.ppf(1 - confidence)
+    VaR = media + z_score * desviacion_estandar
+    return VaR
+
+def var_analitico_ventana(returns, window):
+    if len(returns) < window:
+        return np.nan
+    window_returns = returns.iloc[-window:]
+    return calcular_var_analitico(window_returns)
 
 # Función para calcular VaR usando simulación de Monte Carlo
 def calcular_var_montecarlo(returns, num_simulaciones=1000, horizonte=1, percentil=5):
@@ -162,14 +180,19 @@ else:
         selected_asset = st.selectbox("Seleccione un activo para analizar:", simbolos)
         
         # Calcular VaR para el activo seleccionado
-        var_95 = calcular_var(returns[selected_asset])
+        var_95_historico = calcular_var_historico(returns[selected_asset])
         # Calcular VaR con montecarlo para el activo seleccionado
         var_95_montecarlo = calcular_var_montecarlo(returns[selected_asset])
+        #Calcular VaR con método analítico
+        var_95_analitico = calcular_var_analitico(returns[selected_asset])
         
-        col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(2)
         col1.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
-        col2.metric("VaR 95%", f"{var_95:.2%}")
-        col3.metric("VaR 95% MC", f"{var_95_montecarlo:.2%}")
+        col2.metric("VaR 95% Histórico", f"{var_95_historico:.2%}")
+
+        col1, col2 = st.columns(2)
+        col1.metric("VaR 95% MC", f"{var_95_montecarlo:.2%}")
+        col2.metric("VaR 95% Analítico", f"{var_95_analitico:.2%}")
 
         # Gráfico de precio normalizado del activo seleccionado vs benchmark
         fig_asset = go.Figure()
@@ -184,7 +207,7 @@ else:
         
         with col1:
             # Histograma para el activo seleccionado
-            var_asset = calcular_var(returns[selected_asset])
+            var_asset = calcular_var_historico(returns[selected_asset])
             fig_hist_asset = crear_histograma_distribucion(
                 returns[selected_asset],
                 var_asset,
@@ -194,7 +217,7 @@ else:
             
         with col2:
             # Histograma para el benchmark
-            var_bench = calcular_var(returns[benchmark])
+            var_bench = calcular_var_historico(returns[benchmark])
             fig_hist_bench = crear_histograma_distribucion(
                 returns[benchmark],
                 var_bench,
@@ -207,7 +230,7 @@ else:
         st.header("Análisis del Portafolio")
         
         # Calcular VaR y CVaR para el portafolio
-        portfolio_var_95 = calcular_var(portfolio_returns)
+        portfolio_var_95 = calcular_var_historico(portfolio_returns)
 
         col1, col2 = st.columns(2)
         col1.metric("Rendimiento Total del Portafolio", f"{portfolio_cumulative_returns.iloc[-1]:.2%}")
@@ -226,7 +249,7 @@ else:
         
         with col1:
             # Histograma para el portafolio
-            var_port = calcular_var(portfolio_returns)
+            var_port = calcular_var_historico(portfolio_returns)
             fig_hist_port = crear_histograma_distribucion(
                 portfolio_returns,
                 var_port,
@@ -236,7 +259,7 @@ else:
             
         with col2:
             # Histograma para el benchmark
-            var_bench = calcular_var(returns[benchmark])
+            var_bench = calcular_var_historico(returns[benchmark])
             fig_hist_bench = crear_histograma_distribucion(
                 returns[benchmark],
                 var_bench,
