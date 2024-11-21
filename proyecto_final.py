@@ -13,6 +13,9 @@ def obtener_datos_acciones(simbolos, start_date, end_date):
 
 def calcular_metricas(df):
     returns = df.pct_change().dropna()
+        # Asegurarse de que returns sea un DataFrame
+    if not isinstance(returns, pd.DataFrame):
+        returns = pd.DataFrame(returns)
     cumulative_returns = (1 + returns).cumprod() - 1
     normalized_prices = df / df.iloc[0] * 100
     return returns, cumulative_returns, normalized_prices
