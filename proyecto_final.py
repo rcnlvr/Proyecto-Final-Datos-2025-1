@@ -287,16 +287,16 @@ else:
             var_temp = {}
             
             # Para el portafolio
-            port_var = calcular_var_ventana(portfolio_returns, ventana)
+            port_var = var_historico_ventana(portfolio_returns, ventana)
             var_temp['Portafolio'] = port_var
             
             # Para cada símbolo
             for symbol in simbolos:
-                var = calcular_var_ventana(returns[symbol], ventana)
+                var = var_historico_ventana(returns[symbol], ventana)
                 var_temp[symbol] = var
             
             # Para el benchmark
-            bench_var = calcular_var_ventana(returns[benchmark], ventana)
+            bench_var = var_historico_ventana(returns[benchmark], ventana)
             var_temp[selected_benchmark] = bench_var
             
             var_ventanas[f'{ventana}d'] = pd.Series(var_temp)
