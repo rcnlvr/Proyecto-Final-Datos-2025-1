@@ -44,7 +44,7 @@ def calcular_var_montecarlo(returns, num_simulaciones=10000, nivel_confianza=0.9
     simulaciones = np.random.normal(media, desviacion_estandar, num_simulaciones)
     simulaciones_ordenadas = np.sort(simulaciones)
     percentil = int((1 - nivel_confianza) * num_simulaciones)
-    var = -simulaciones_ordenadas[percentil]
+    var = simulaciones_ordenadas[percentil]
     return var
 
 def var_montecarlo_ventana(returns, window):
