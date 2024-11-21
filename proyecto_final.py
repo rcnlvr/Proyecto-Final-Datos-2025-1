@@ -162,7 +162,7 @@ else:
         #var_95_analítico = calcular_var_analítico(returns[selected_asset])
         
         
-        col1, col2 = st.columns(3)
+        col1, col2, col3 = st.columns(3)
         col1.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
         col2.metric("VaR 95% (Histórico)", f"{var_95:.2%}")
         #col1 = st.columns(1)
