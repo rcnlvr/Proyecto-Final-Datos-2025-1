@@ -45,8 +45,6 @@ def calcular_var_montecarlo(returns, num_simulaciones=1000000, horizonte=1, perc
     simulaciones = np.random.multivariate_normal(media, cov_matrix, (num_simulaciones, horizonte))
     # Rendimientos simulados
     simulaciones_df = pd.DataFrame(simulaciones.reshape(num_simulaciones, horizonte * len(returns.columns)), columns=returns.columns)
-    # Crear un DataFrame para Streamlit
-    st.dataframe(simulaciones_df)
     # Valor del portafolio inicial
     valor_inicial = 1  # Asumimos un valor inicial de 1 para simplificar
     # Valor del portafolio al final del horizonte
