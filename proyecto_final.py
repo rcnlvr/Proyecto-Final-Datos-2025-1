@@ -242,12 +242,17 @@ else:
     with tab2:
         st.header("Análisis del Portafolio")
         
-        # Calcular VaR y CVaR para el portafolio
+        # Calcular VaR del portafolio
         portfolio_var_95 = calcular_var(portfolio_returns)
+        # Calcular VaR del portafolio con simulaciones de Montecarlo
+        portfolio_var_montecarlo = calcular_var_montecarlo(portfolio_returns)
+        
 
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         col1.metric("Rendimiento Total del Portafolio", f"{portfolio_cumulative_returns.iloc[-1]:.2%}")
         col2.metric("VaR 95% del Portafolio", f"{portfolio_var_95:.2%}")
+        col3.metric("VaR 95% del Portafolio con Montecarlo", f"{portfolio_var_montecarlo:.2%}")
+
 
         # Gráfico de rendimientos acumulados del portafolio vs benchmark
         fig_cumulative = go.Figure()
