@@ -206,19 +206,19 @@ else:
             )
             st.plotly_chart(fig_hist_asset, use_container_width=True, key="hist_asset")
 
-        with col2:
+        #with col2:
             # Histograma para el activo seleccionado
-            var_asset = calcular_var_montecarlo(returns[selected_asset])
-            fig_hist_asset = crear_histograma_distribucion(
-                returns[selected_asset],
-                var_asset,
-                f'Distribución de Retornos (con MC) - {selected_asset}'
-            )
-            st.plotly_chart(fig_hist_asset, use_container_width=True, key="hist_asset")
+            #var_asset = calcular_var_montecarlo(returns[selected_asset])
+            #fig_hist_asset = crear_histograma_distribucion(
+                #returns[selected_asset],
+                #var_asset,
+                #f'Distribución de Retornos (con MC) - {selected_asset}'
+            #)
+            #st.plotly_chart(fig_hist_asset, use_container_width=True, key="hist_asset")
 
-        col1, col2 = st.columns(2)
+        #col1, col2 = st.columns(2)
 
-        with col1:
+        with col2:
             # Histograma para el benchmark
             var_bench = calcular_var(returns[benchmark])
             fig_hist_bench = crear_histograma_distribucion(
@@ -228,15 +228,15 @@ else:
             )
             st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_1")
             
-        with col2:
+        #with col2:
             # Histograma para el benchmark
-            var_bench = calcular_var_montecarlo(returns[benchmark])
-            fig_hist_bench = crear_histograma_distribucion(
-                returns[benchmark],
-                var_bench,
-                f'Distribución de Retornos (con MC) - {selected_benchmark}'
-            )
-            st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_1")
+            #var_bench = calcular_var_montecarlo(returns[benchmark])
+            #fig_hist_bench = crear_histograma_distribucion(
+                #returns[benchmark],
+                #var_bench,
+                #f'Distribución de Retornos (con MC) - {selected_benchmark}'
+            #)
+            #st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_1")
 
 
     with tab2:
