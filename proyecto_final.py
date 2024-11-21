@@ -163,7 +163,7 @@ else:
         # Calcular VaR para el activo seleccionado
         var_95 = calcular_var(returns[selected_asset])
         # Calcular VaR con montecarlo para el activo seleccionado
-        #var_95_montecarlo = calcular_var_montecarlo(returns[selected_asset])
+        var_95_montecarlo = calcular_var_montecarlo(returns[selected_asset])
         # Calcular VaR con el método analítico
         #var_95_analítico = calcular_var_analítico(returns[selected_asset])
         
@@ -172,8 +172,8 @@ else:
         col1.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
         col2.metric("VaR 95% (Histórico)", f"{var_95:.2%}")
 
-        #col1, col2 = st.columns(2)
-        #col1.metric("VaR 95% (Montecarlo)", f"{var_95_montecarlo:.2%}")
+        col1 = st.columns()
+        col1.metric("VaR 95% (Montecarlo)", f"{var_95_montecarlo:.2%}")
         #col1.metric("VaR 95% (Análitico)", f"{var_95_analítico:.2%}")
 
         # Gráfico de precio normalizado del activo seleccionado vs benchmark
