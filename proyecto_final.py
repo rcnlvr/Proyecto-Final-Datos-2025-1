@@ -36,22 +36,16 @@ def calcular_var_ventana(returns, window):
     window_returns = returns.iloc[-window:]
     return calcular_var(window_returns)
 
-def calcular_var_montecarlo(returns, num_simulaciones=1000000, horizonte=1, percentil=5):
-    # Media y covarianza de los rendimientos
-    media = returns.mean().values
-    cov_matrix = returns.cov().values
-    # Simulaciones de Monte Carlo
-    simulaciones = np.random.multivariate_normal(media, cov_matrix, (num_simulaciones, horizonte))
-    # Rendimientos simulados
-    simulaciones_df = pd.DataFrame(simulaciones.reshape(num_simulaciones, horizonte * len(returns.columns)), columns=returns.columns)
-    # Valor del portafolio inicial
-    valor_inicial = 1  # Asumimos un valor inicial de 1 para simplificar
-    # Valor del portafolio al final del horizonte
-    valor_final = valor_inicial * (1 + simulaciones_df.sum(axis=1))
-    # Pérdidas
-    perdidas = valor_inicial - valor_final
-    # VaR al percentil especificado
-    var = np.percentile(perdidas, percentil)
+# Función para calcular VaR usando simulación de Monte Carlo con valores normalizados ya calculados
+def calcular_var_montecarlo(normalized_prices, confidence_level=0.95, num_simulations=10000):
+    mean_return = np.mean(normalized_prices)
+    std_dev_return = np.std(normalized_prices)
+    # Generar muestras aleatorias de los retornos normalizados
+    simulated_returns = np.random.normal(mean_return, std_dev_return, (num_simulations, len(normalized_prices)))
+    # Calcular los retornos del portafolio para cada simulación
+    portfolio_returns = np.sum(simulated_returns, axis=1)
+    # Calcular el VaR al nivel de confianza especificado
+    var = np.percentile(portfolio_returns, (1 - confidence_level) * 100)
     return var
 
 def var_montecarlo_ventana(returns, window):
