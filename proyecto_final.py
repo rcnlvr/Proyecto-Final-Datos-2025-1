@@ -166,7 +166,7 @@ else:
         col1.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
         col2.metric("VaR 95% (Histórico)", f"{var_95:.2%}")
 
-        col1 = st.columns()
+        col1 = st.columns(1)
         col1.metric("VaR 95% (Montecarlo)", f"{var_95_montecarlo:.2%}")
         #col1.metric("VaR 95% (Análitico)", f"{var_95_analítico:.2%}")
 
