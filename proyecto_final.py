@@ -37,7 +37,7 @@ def calcular_var_ventana(returns, window):
     return calcular_var(window_returns)
 
 # Función para calcular el VaR usando el método de Montecarlo
-def calcular_var_montecarlo(returns, num_simulaciones=10000, nivel_confianza=0.95):
+def calcular_var_montecarlo(returns, num_simulaciones=100000, nivel_confianza=0.95):
     media = np.mean(returns)
     desviacion_estandar = np.std(returns)
     simulaciones = np.random.normal(media, desviacion_estandar, num_simulaciones)
