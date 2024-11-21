@@ -38,6 +38,11 @@ def calcular_var_ventana(returns, window):
 
 # Función para calcular VaR usando simulación de Monte Carlo con valores normalizados ya calculados
 def calcular_var_montecarlo(returns, num_simulaciones=1000000, horizonte=1, percentil=5):
+    # Verificar que returns sea un DataFrame
+    if not isinstance(returns, pd.DataFrame):
+        raise ValueError("La variable 'returns' debe ser un DataFrame de pandas.")
+    # Eliminar valores NaN
+    returns = returns.dropna()
     # Media y covarianza de los rendimientos
     media = returns.mean()
     cov_matrix = returns.cov()
