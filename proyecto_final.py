@@ -40,7 +40,7 @@ def calcular_var_ventana(returns, window):
 def calcular_var_montecarlo(returns, num_simulaciones=1000000, horizonte=1, percentil=5):
     # Media y covarianza de los rendimientos
     media = returns.mean().dropna()
-    cov_matrix = returns.cov().dropna()
+    cov_matrix = pd.DataFrame(returns.cov())
     # Simulaciones de Monte Carlo
     simulaciones = np.random.multivariate_normal(media, cov_matrix, (num_simulaciones, horizonte))
     # Rendimientos simulados
