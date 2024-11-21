@@ -139,7 +139,7 @@ else:
         # Calcular VaR para el activo seleccionado
         var_95 = calcular_var(returns[selected_asset])
         # Calcular VaR con montecarlo para el activo seleccionado
-        var_95_montecarlo = calcular_var_montecarlo(returns[selected_asset])
+        #var_95_montecarlo = calcular_var_montecarlo(returns[selected_asset])
         
         col1, col2, col3 = st.columns(2)
         col1.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
