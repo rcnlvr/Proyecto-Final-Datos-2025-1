@@ -36,6 +36,30 @@ def calcular_var_ventana(returns, window):
     window_returns = returns.iloc[-window:]
     return calcular_var(window_returns)
 
+def calcular_var_montecarlo(returns, num_simulaciones=1000000, horizonte=1, percentil=5):
+    # Media y covarianza de los rendimientos
+    media = returns.mean()
+    cov_matrix = returns.cov()
+    # Simulaciones de Monte Carlo
+    simulaciones = np.random.multivariate_normal(media, cov_matrix, (num_simulaciones, horizonte))
+    # Rendimientos simulados
+    simulaciones_df = pd.DataFrame(simulaciones.reshape(num_simulaciones, horizonte * len(returns.columns)), columns=returns.columns)
+    # Valor del portafolio inicial
+    valor_inicial = 1  # Asumimos un valor inicial de 1 para simplificar
+    # Valor del portafolio al final del horizonte
+    valor_final = valor_inicial * (1 + simulaciones_df.sum(axis=1))
+    # Pérdidas
+    perdidas = valor_inicial - valor_final
+    # VaR al percentil especificado
+    var = np.percentile(perdidas, percentil)
+    return var
+
+def var_montecarlo_ventana(returns, window):
+    if len(returns) < window:
+        return np.nan
+    window_returns = returns.iloc[-window:]
+    return calcular_var_montecarlo(window_returns)
+
 def crear_histograma_distribucion(returns, var_95, title):
     # Crear el histograma base
     fig = go.Figure()
@@ -140,11 +164,17 @@ else:
         var_95 = calcular_var(returns[selected_asset])
         # Calcular VaR con montecarlo para el activo seleccionado
         #var_95_montecarlo = calcular_var_montecarlo(returns[selected_asset])
+        # Calcular VaR con el método analítico
+        #var_95_analítico = calcular_var_analítico(returns[selected_asset])
+        
         
         col1, col2 = st.columns(2)
         col1.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
-        col2.metric("VaR 95%", f"{var_95:.2%}")
-        #col3.metric("VaR 95% MC", f"{var_95_montecarlo:.2%}")
+        col2.metric("VaR 95% (Histórico)", f"{var_95:.2%}")
+
+        #col1, col2 = st.columns(2)
+        #col1.metric("VaR 95% (Montecarlo)", f"{var_95_montecarlo:.2%}")
+        #col1.metric("VaR 95% (Análitico)", f"{var_95_analítico:.2%}")
 
         # Gráfico de precio normalizado del activo seleccionado vs benchmark
         fig_asset = go.Figure()
