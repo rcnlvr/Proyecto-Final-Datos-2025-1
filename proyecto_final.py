@@ -38,13 +38,11 @@ def calcular_var_ventana(returns, window):
 
 # Función para calcular VaR usando simulación de Monte Carlo con valores normalizados ya calculados
 def calcular_var_montecarlo(returns, num_simulaciones=1000000, horizonte=1, percentil=5):
-    # Asegurarse de que no haya valores nulos
-    returns = returns.dropna()
     # Media y covarianza de los rendimientos
     media = returns.mean()
-    cov_matrix = returns.cov()
+    cov_mat = returns.cov()
     # Simulaciones de Monte Carlo
-    simulaciones = np.random.multivariate_normal(media, cov_matrix, (num_simulaciones, horizonte))
+    simulaciones = np.random.multivariate_normal(media, cov_mat, (num_simulaciones, horizonte))
     # Rendimientos simulados
     simulaciones_df = pd.DataFrame(simulaciones.reshape(num_simulaciones, horizonte * len(returns.columns)), columns=returns.columns)
     # Valor del portafolio inicial
