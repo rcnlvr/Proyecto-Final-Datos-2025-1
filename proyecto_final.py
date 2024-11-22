@@ -319,12 +319,18 @@ else:
             
             var_ventanas[f'{ventana}d'] = pd.Series(var_temp)
         
+        col1, col2 = st.columns(2)
+        col1.subheader("Rendimientos")
+        col1.dataframe(rendimientos_ventanas.style.format("{:.2%}"))
+
+        col2.subheader("VaR 95%")}
+        col2.dataframe(rendimientos_ventanas.style.format("{:.2%}"))
         # Mostrar las tablas
-        st.subheader("Rendimientos")
-        st.dataframe(rendimientos_ventanas.style.format("{:.2%}"))
+        #st.subheader("Rendimientos")
+        #st.dataframe(rendimientos_ventanas.style.format("{:.2%}"))
         
-        st.subheader("VaR 95%")
-        st.dataframe(var_ventanas.style.format("{:.2%}"))
+        #st.subheader("VaR 95%")
+        #st.dataframe(var_ventanas.style.format("{:.2%}"))
 
         # Gráfico de comparación de rendimientos
         fig_comparison = go.Figure()
