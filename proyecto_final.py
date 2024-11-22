@@ -304,35 +304,38 @@ else:
             
             # VaR
             var_temp = {}
-            #var_mc_temp = {}
+            var_mc_temp = {}
             
             # Para el portafolio
             port_var = calcular_var_ventana(portfolio_returns, ventana)
-            #port_var_mc = var_montecarlo_ventana(portfolio_returns, ventana)
             var_temp['Portafolio'] = port_var
-            #var_mc_temp['Portafolio'] = port_var_mc
+            port_var_mc = var_montecarlo_ventana(portfolio_returns, ventana)
+            var_mc_temp['Portafolio'] = port_var_mc
             
             # Para cada símbolo
             for symbol in simbolos:
                 var = calcular_var_ventana(returns[symbol], ventana)
                 var_temp[symbol] = var
-                #var_mc = var_montecarlo_ventana(returns[symbol], ventana)
-                #var_mc_temp[symbol] = var_mc
+                var_mc = var_montecarlo_ventana(returns[symbol], ventana)
+                var_mc_temp[symbol] = var_mc
             
             # Para el benchmark
             bench_var = calcular_var_ventana(returns[benchmark], ventana)
             var_temp[selected_benchmark] = bench_var
-            #bench_var_mc = var_montecarlo_ventana(returns[benchmark], ventana)
-            #var_mc_temp[selected_benchmark] = bench_var_mc
+            bench_var_mc = var_montecarlo_ventana(returns[benchmark], ventana)
+            var_mc_temp[selected_benchmark] = bench_var_mc
             
             var_ventanas[f'{ventana}d'] = pd.Series(var_temp)
-            #var_mc_ventanas[f'{ventana}d'] = pd.Series(var_mc_temp)
+            var_mc_ventanas[f'{ventana}d'] = pd.Series(var_mc_temp)
             
 
         # Mostrar las tablas
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         col1.subheader("Rendimientos")
         col1.dataframe(rendimientos_ventanas.style.format("{:.2%}"))
 
         col2.subheader("VaR 95%")
         col2.dataframe(rendimientos_ventanas.style.format("{:.2%}"))
+        
+        col3.subheader("VaR 95% MC")
+        col3.dataframe(rendimientos_ventanas.style.format("{:.2%}"))
