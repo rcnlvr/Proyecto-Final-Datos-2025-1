@@ -199,11 +199,11 @@ else:
         with col1:
             # Histograma para el activo seleccionado
             var_asset = calcular_var(returns[selected_asset])
-            var_mc_asset = calcular_var_montecarlo(returns[selected_asset])
+            #var_mc_asset = calcular_var_montecarlo(returns[selected_asset])
             fig_hist_asset = crear_histograma_distribucion(
                 returns[selected_asset],
                 var_asset,
-                var_mc_asset,
+                #var_mc_asset,
                 f'Distribución de Retornos - {selected_asset}'
             )
             st.plotly_chart(fig_hist_asset, use_container_width=True, key="hist_asset")
