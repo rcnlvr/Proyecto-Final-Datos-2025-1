@@ -193,7 +193,7 @@ else:
         st.plotly_chart(fig_asset, use_container_width=True, key="price_normalized")
         
         st.subheader(f"Distribución de Retornos: {selected_asset} vs {selected_benchmark}")
-        
+
         col1, col2 = st.columns(2)
         
         with col1:
@@ -206,18 +206,6 @@ else:
             )
             st.plotly_chart(fig_hist_asset, use_container_width=True, key="hist_asset")
 
-        #with col2:
-            # Histograma para el activo seleccionado
-            #var_asset = calcular_var_montecarlo(returns[selected_asset])
-            #fig_hist_asset = crear_histograma_distribucion(
-                #returns[selected_asset],
-                #var_asset,
-                #f'Distribución de Retornos (con MC) - {selected_asset}'
-            #)
-            #st.plotly_chart(fig_hist_asset, use_container_width=True, key="hist_asset")
-
-        #col1, col2 = st.columns(2)
-
         with col2:
             # Histograma para el benchmark
             var_bench = calcular_var(returns[benchmark])
@@ -227,6 +215,18 @@ else:
                 f'Distribución de Retornos - {selected_benchmark}'
             )
             st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_1")
+            
+        col1, col2 = st.columns(2)
+
+        #with col1:
+            # Histograma para el activo seleccionado
+            #var_asset = calcular_var(returns[selected_asset])
+            #fig_hist_asset = crear_histograma_distribucion(
+                #returns[selected_asset],
+                #var_asset,
+                #f'Distribución de Retornos - {selected_asset}'
+            #)
+            #st.plotly_chart(fig_hist_asset, use_container_width=True, key="hist_asset")
             
         #with col2:
             # Histograma para el benchmark
