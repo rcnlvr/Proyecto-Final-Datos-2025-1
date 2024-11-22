@@ -220,7 +220,7 @@ else:
 
         with col1:
             # Histograma para el activo seleccionado
-            var_mc_asset = calcular_varmontecarlo(returns[selected_asset])
+            var_mc_asset = calcular_var_montecarlo(returns[selected_asset])
             fig_hist_asset = crear_histograma_distribucion(
                 returns[selected_asset],
                 var_mc_asset,
