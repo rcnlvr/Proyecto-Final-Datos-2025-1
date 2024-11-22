@@ -216,27 +216,27 @@ else:
             )
             st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_1")
             
-        col1 = st.columns(1)
+        col1, col2 = st.columns(2)
 
         with col1:
             # Histograma para el activo seleccionado
             var_mc_asset = calcular_var_montecarlo(returns[selected_asset])
-            fig_hist_asset = crear_histograma_distribucion(
+            fig_hist_asset_mc = crear_histograma_distribucion_mc(
                 returns[selected_asset],
                 var_mc_asset,
                 f'Distribución de Retornos - {selected_asset}'
             )
-            st.plotly_chart(fig_hist_asset, use_container_width=True, key="hist_asset")
+            st.plotly_chart(fig_hist_asset_mc, use_container_width=True, key="hist_asset")
             
         with col2:
             # Histograma para el benchmark
             var_mc_bench = calcular_var_montecarlo(returns[benchmark])
-            fig_hist_bench = crear_histograma_distribucion(
+            fig_hist_bench_mc = crear_histograma_distribucion_mc(
                 returns[benchmark],
                 var_mc_bench,
                 f'Distribución de Retornos (con MC) - {selected_benchmark}'
             )
-            st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_1")
+            st.plotly_chart(fig_hist_bench_mc, use_container_width=True, key="hist_bench_1")
 
 
     with tab2:
