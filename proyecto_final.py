@@ -337,7 +337,7 @@ else:
         col1.dataframe(rendimientos_ventanas.style.format("{:.2%}"))
 
         col2.subheader("VaR 95%")
-        col2.dataframe(rendimientos_ventanas.style.format("{:.2%}"))
+        col2.dataframe(var_ventanas.style.format("{:.2%}"))
         
         col3.subheader("VaR 95% MC")
-        col3.dataframe(rendimientos_ventanas.style.format("{:.2%}"))
+        col3.dataframe(var_mc_ventanas.style.format("{:.2%}"))
