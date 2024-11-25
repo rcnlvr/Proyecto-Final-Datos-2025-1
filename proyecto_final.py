@@ -37,7 +37,7 @@ def calcular_var_ventana(returns, window):
     return calcular_var(window_returns)
 
 # Función para calcular el VaR usando el método de Montecarlo
-def calcular_var_montecarlo(returns, num_simulaciones=100000, nivel_confianza=0.95):
+def calcular_var_mc(returns, num_simulaciones=100000, nivel_confianza=0.95):
     media = np.mean(returns)
     desviacion_estandar = np.std(returns)    
     simulaciones = np.random.normal(media, desviacion_estandar, num_simulaciones)
@@ -46,31 +46,13 @@ def calcular_var_montecarlo(returns, num_simulaciones=100000, nivel_confianza=0.
     var = simulaciones_ordenadas[percentil]
     return var
 
-#def calcular_var_montecarlo(returns, num_simulaciones=1000000, horizonte=1, percentil=5):
-    # Media y covarianza de los rendimientos
-#    media = returns.mean().values
-#    cov_matrix = returns.cov().values
-    # Simulaciones de Monte Carlo
-#    simulaciones = np.random.multivariate_normal(media, cov_matrix, (num_simulaciones, horizonte))
-    # Rendimientos simulados
-#    simulaciones_df = pd.DataFrame(simulaciones.reshape(num_simulaciones, horizonte * len(returns.columns)), columns=returns.columns)
-    # Valor del portafolio inicial
-#    valor_inicial = 1  # Asumimos un valor inicial de 1 para simplificar
-    # Valor del portafolio al final del horizonte
-#    valor_final = valor_inicial * (1 + simulaciones_df.sum(axis=1))
-    # Pérdidas
-#    perdidas = valor_inicial - valor_final
-    # VaR al percentil especificado
-#    var = np.percentile(perdidas, percentil)
-#    return var
-    
-def var_montecarlo_ventana(returns, window):
+def var_mc_ventana(returns, window):
     if len(returns) < window:
         return np.nan
     window_returns = returns.iloc[-window:]
-    return calcular_var_montecarlo(window_returns)
+    return calcular_var_mc(window_returns)
 
-def crear_histograma_distribucion(returns, var_95, title):
+def crear_histograma_distribucion(returns, var_95, var_95_mc title):
     # Crear el histograma base
     fig = go.Figure()
     
@@ -106,6 +88,14 @@ def crear_histograma_distribucion(returns, var_95, title):
         name='VaR 95%',
         line=dict(color='green', width=2, dash='dash')
     ))
+
+    # Añadir líneas verticales para ubicar el VaR con Montecarlo
+    fig.add_trace(go.Scatter(
+        x=[var_95_mc, var_95_mc],
+        y=[0, max(counts)],
+        mode='lines',
+        name='VaR 95% (Montecarlo)',
+        line=dict(color='yellow', width=2, dash='dash')
 
     # Actualizar el diseño
     fig.update_layout(
@@ -173,17 +163,12 @@ else:
         # Calcular VaR para el activo seleccionado
         var_95 = calcular_var(returns[selected_asset])
         # Calcular VaR con montecarlo para el activo seleccionado
-        var_95_montecarlo = calcular_var_montecarlo(returns[selected_asset])
-        # Calcular VaR con el método analítico
-        #var_95_analítico = calcular_var_analítico(returns[selected_asset])
-        
+        var_95_mc = calcular_var_mc(returns[selected_asset])        
         
         col1, col2, col3 = st.columns(3)
         col1.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
         col2.metric("VaR 95% (Histórico)", f"{var_95:.2%}")
-        #col1 = st.columns(1)
-        col3.metric("VaR 95% (Montecarlo)", f"{var_95_montecarlo:.2%}")
-        #col1.metric("VaR 95% (Análitico)", f"{var_95_analítico:.2%}")
+        col3.metric("VaR 95% (Montecarlo)", f"{var_95_mc:.2%}")
 
         # Gráfico de precio normalizado del activo seleccionado vs benchmark
         fig_asset = go.Figure()
@@ -199,11 +184,11 @@ else:
         with col1:
             # Histograma para el activo seleccionado
             var_asset = calcular_var(returns[selected_asset])
-            #var_mc_asset = calcular_var_montecarlo(returns[selected_asset])
+            var_mc_asset = calcular_var_mc(returns[selected_asset])
             fig_hist_asset = crear_histograma_distribucion(
                 returns[selected_asset],
                 var_asset,
-                #var_mc_asset,
+                var_mc_asset,
                 f'Distribución de Retornos - {selected_asset}'
             )
             st.plotly_chart(fig_hist_asset, use_container_width=True, key="hist_asset")
@@ -211,35 +196,16 @@ else:
         with col2:
             # Histograma para el benchmark
             var_bench = calcular_var(returns[benchmark])
+            var_bench_mc = calcular_var_mc(returns[benchmark])
             fig_hist_bench = crear_histograma_distribucion(
                 returns[benchmark],
                 var_bench,
+                var_bench_mc
                 f'Distribución de Retornos - {selected_benchmark}'
             )
             st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_1")
             
         col1, col2 = st.columns(2)
-
-        #with col1:
-            # Histograma para el activo seleccionado
-            #var_mc_asset = calcular_var_montecarlo(returns[selected_asset])
-            #fig_hist_asset_mc = crear_histograma_distribucion_mc(
-                #returns[selected_asset],
-                #var_mc_asset,
-                #f'Distribución de Retornos - {selected_asset}'
-            #)
-            #st.plotly_chart(fig_hist_asset_mc, use_container_width=True, key="hist_asset")
-            
-        #with col2:
-            # Histograma para el benchmark
-            #var_mc_bench = calcular_var_montecarlo(returns[benchmark])
-            #fig_hist_bench_mc = crear_histograma_distribucion_mc(
-                #returns[benchmark],
-                #var_mc_bench,
-                #f'Distribución de Retornos (con MC) - {selected_benchmark}'
-            #)
-            #st.plotly_chart(fig_hist_bench_mc, use_container_width=True, key="hist_bench_1")
-
 
     with tab2:
         st.header("Análisis del Portafolio")
@@ -247,13 +213,13 @@ else:
         # Calcular VaR del portafolio
         portfolio_var_95 = calcular_var(portfolio_returns)
         # Calcular VaR del portafolio con simulaciones de Montecarlo
-        portfolio_var_montecarlo = calcular_var_montecarlo(portfolio_returns)
+        portfolio_var_mc = calcular_var_mc(portfolio_returns)
         
 
         col1, col2, col3 = st.columns(3)
         col1.metric("Rendimiento Total del Portafolio", f"{portfolio_cumulative_returns.iloc[-1]:.2%}")
         col2.metric("VaR 95% del Portafolio", f"{portfolio_var_95:.2%}")
-        col3.metric("VaR 95% del Portafolio con Montecarlo", f"{portfolio_var_montecarlo:.2%}")
+        col3.metric("VaR 95% del Portafolio con Montecarlo", f"{portfolio_var_mc:.2%}")
 
 
         # Gráfico de rendimientos acumulados del portafolio vs benchmark
@@ -311,20 +277,20 @@ else:
             # Para el portafolio
             port_var = calcular_var_ventana(portfolio_returns, ventana)
             var_temp['Portafolio'] = port_var
-            port_var_mc = var_montecarlo_ventana(portfolio_returns, ventana)
+            port_var_mc = var_mc_ventana(portfolio_returns, ventana)
             var_mc_temp['Portafolio'] = port_var_mc
             
             # Para cada símbolo
             for symbol in simbolos:
                 var = calcular_var_ventana(returns[symbol], ventana)
                 var_temp[symbol] = var
-                var_mc = var_montecarlo_ventana(returns[symbol], ventana)
+                var_mc = var_mc_ventana(returns[symbol], ventana)
                 var_mc_temp[symbol] = var_mc
             
             # Para el benchmark
             bench_var = calcular_var_ventana(returns[benchmark], ventana)
             var_temp[selected_benchmark] = bench_var
-            bench_var_mc = var_montecarlo_ventana(returns[benchmark], ventana)
+            bench_var_mc = var_mc_ventana(returns[benchmark], ventana)
             var_mc_temp[selected_benchmark] = bench_var_mc
             
             var_ventanas[f'{ventana}d'] = pd.Series(var_temp)
