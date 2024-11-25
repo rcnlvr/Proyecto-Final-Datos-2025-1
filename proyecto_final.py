@@ -95,7 +95,7 @@ def crear_histograma_distribucion(returns, var_95, var_95_mc, title):
         y=[0, max(counts)],
         mode='lines',
         name='VaR 95% (Montecarlo)',
-        line=dict(color='yellow', width=2, dash='dash')
+        line=dict(color='purple', width=2, dash='dash')
     ))
 
     # Actualizar el diseño
@@ -237,9 +237,11 @@ else:
         with col1:
             # Histograma para el portafolio
             var_port = calcular_var(portfolio_returns)
+            var_port_mc = calcular_var_mc(portfolio_returns)
             fig_hist_port = crear_histograma_distribucion(
                 portfolio_returns,
                 var_port,
+                var_port_mc,
                 'Distribución de Retornos - Portafolio'
             )
             st.plotly_chart(fig_hist_port, use_container_width=True, key="hist_port")
@@ -247,9 +249,11 @@ else:
         with col2:
             # Histograma para el benchmark
             var_bench = calcular_var(returns[benchmark])
+            var_bench_mc = calcular_var_mc(returns[benchmark])
             fig_hist_bench = crear_histograma_distribucion(
                 returns[benchmark],
                 var_bench,
+                var_bench_mc,
                 f'Distribución de Retornos - {selected_benchmark}'
             )
             st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_2")
