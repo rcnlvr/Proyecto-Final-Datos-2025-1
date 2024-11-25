@@ -52,7 +52,7 @@ def var_mc_ventana(returns, window):
     window_returns = returns.iloc[-window:]
     return calcular_var_mc(window_returns)
 
-def crear_histograma_distribucion(returns, var_95, var_95_mc title):
+def crear_histograma_distribucion(returns, var_95, var_95_mc, title):
     # Crear el histograma base
     fig = go.Figure()
     
