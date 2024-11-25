@@ -201,7 +201,7 @@ else:
             fig_hist_bench = crear_histograma_distribucion(
                 returns[benchmark],
                 var_bench,
-                var_bench_mc
+                var_bench_mc,
                 f'Distribución de Retornos - {selected_benchmark}'
             )
             st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_1")
