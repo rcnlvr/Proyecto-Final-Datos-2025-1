@@ -96,6 +96,7 @@ def crear_histograma_distribucion(returns, var_95, var_95_mc, title):
         mode='lines',
         name='VaR 95% (Montecarlo)',
         line=dict(color='yellow', width=2, dash='dash')
+    ))
 
     # Actualizar el diseño
     fig.update_layout(
