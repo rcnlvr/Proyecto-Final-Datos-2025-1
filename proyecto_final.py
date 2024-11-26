@@ -154,7 +154,7 @@ else:
     portfolio_cumulative_returns = (1 + portfolio_returns).cumprod() - 1
 
     # Crear pestañas
-    tab1, tab2 = st.tabs(["Análisis de Activos Individuales", "Análisis del Portafolio"])
+    tab1, tab2, tab3 = st.tabs(["Análisis de Activos Individuales", "Análisis del Portafolio", "Marco Teórico"])
 
     with tab1:
         st.header("Análisis de Activos Individuales")
