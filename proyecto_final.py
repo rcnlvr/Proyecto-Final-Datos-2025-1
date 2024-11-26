@@ -312,3 +312,23 @@ else:
         
         col3.subheader("VaR 95% MC")
         col3.dataframe(var_mc_ventanas.style.format("{:.2%}"))
+
+        with tab3:
+            st.header("Marco Teórico")
+            st.write("""
+    Aquí puedes incluir el texto de tu marco teórico. Por ejemplo:
+    
+    **Análisis de Activos Individuales**
+    
+    El análisis de activos individuales es crucial para entender el comportamiento de cada activo en el mercado. Utilizamos varias métricas como el VaR (Valor en Riesgo) para evaluar el riesgo asociado con cada activo. El VaR histórico y el VaR basado en simulaciones de Montecarlo son dos métodos comunes para calcular este riesgo.
+    
+    **VaR Histórico**
+    
+    El VaR histórico se calcula utilizando los retornos históricos del activo. Este método asume que los retornos futuros seguirán una distribución similar a la de los retornos pasados.
+    
+    **VaR Montecarlo**
+    
+    El VaR basado en Montecarlo utiliza simulaciones para generar posibles escenarios futuros de precios y calcular el riesgo asociado. Este método es más flexible ya que no depende de los retornos históricos.
+    
+    Puedes agregar más secciones y detalles según sea necesario.
+    """)
