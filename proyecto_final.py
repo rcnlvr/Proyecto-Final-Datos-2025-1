@@ -334,7 +334,7 @@ Este modelo nos ayuda a cuantificar la máxima pérdida que puede experimentar n
 
 Este modelo de riesgo es utilizado por varias instituciones financieras y reguladoras para evitar escenarios como el de la crisis económica del 2008. Resultados como la Teoría de Markowitz sobre la diversificación de portafolios, van de la mano con este concepto, pues al estudiar la relación riesgo-rendimiento nos permiten optimizar ganancias de acuerdo con un nivel de riesgo.
 
-  I.	Introducción
+**I.	Introducción**
 
 En un contexto de inversiones es importante cuantificar el riesgo ya que éste no puede ser eliminado en su totalidad y se permea con cada decisión que tomamos, pero ¿Qué es el riesgo?
 
@@ -354,7 +354,7 @@ o	Método histórico: Se basa únicamente en datos pasados. Se toma un período 
 
 o	Simulación por Monte Carlo: tiene un enfoque computacional que modela miles de trayectorias posibles para los rendimientos de una cartera. Se usan las estadísticas históricas para modelar correlaciones entre activos. Luego, al ejecutar las simulaciones, el VaR se calcula observando cuántas veces la cartera tiene pérdidas que superan el umbral de VaR.
 
-  II.	Justificación.
+**II.	Justificación**
 
 En este proyecto, veremos el funcionamiento de este último y lo compararemos con el VaR paramétrico, para observar la diferencia entre estos cálculos y así tener 2 visiones diferentes del riesgo que acompaña a nuestra inversión. La importancia radica en apoyarnos en la toma de decisiones para crear una cartera de inversión que tenga riesgo mínimo. 
 
@@ -362,4 +362,22 @@ De igual forma sabremos cuál es nuestra tolerancia al riesgo, ya que cada activ
 
 Esta es una herramienta fundamental al momento de crear portafolios en el ambiente de renta variable, donde los rendimientos suelen ser más volátiles.
 
+**III.	Desarrollo**
+
+Usaremos un dashboard de streamlit para llevar a cabo este proyecto.
+
+Aquí tendremos un código que nos permitirá escoger 5 activos diferentes y el peso que tendrán en el portafolio, elegiremos un benchmark (marca que será la “meta” a superar de nuestro portafolio) y el horizonte de tiempo hasta un año. Toda esta información la vamos a importar directamente de la biblioteca de Yahoo! Finance, para hacer los cálculos con datos en vivo.
+
+Dentro definiremos una función que calcule el VaR por simulaciones de Monte Carlo y por el método paramétrico con ayuda de la biblioteca Numpy, mostraremos ambos resultados y dado un portafolio, observaremos la gráfica de rendimientos comparada con el benchmark. Haremos un histograma de la distribución de los rendimientos tanto de cada activo como del portafolio en general y aquí podremos visualizar el VaR calculado.
+
+La ventaja es que tendremos distintas ventanas de tiempo: 1, 3, 6 y 12 meses, para observar la variación del riesgo dependiendo del horizonte que tengamos para hacer la inversión, ya que es un dato importante para considerar al momento de elegir los activos que formarán nuestra cartera.
+
+También incluiremos una tabla que nos indique el porcentaje de riesgo de nuestro portafolio en los horizontes de tiempo que establecimos, lo cual nos ayudará para conocer el comportamiento de los activos en el largo plazo y saber en qué plazo nos conviene más cada uno, lo que es crucial para la toma de decisiones.
+
+**IV.	Conclusiones**
+
+Como ya mencionamos, el VaR es una herramienta fundamental en la gestión de portafolios y con este trabajo podremos tener una visión clara del riesgo que involucra invertir en cierto activo o en varios.
+
+Esto nos permite tomar decisiones con más seguridad, lo que es una gran ventaja en este ambiente ya que lo que queremos es hacer crecer nuestro dinero, entonces, conocer el riesgo que implica una inversión y ser capaz de visualizarlo gráficamente es algo que sin duda nos beneficiará a corto y largo plazo.
+    
     """)
