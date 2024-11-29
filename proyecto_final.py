@@ -12,8 +12,11 @@ def obtener_datos_acciones(simbolos, start_date, end_date):
     return data.ffill().dropna()
 
 def calcular_metricas(df):
+    # Cálculo de rendimientos
     returns = df.pct_change().dropna()
+    # Cálculo de rendimientos acumulados de los activos
     cumulative_returns = (1 + returns).cumprod() - 1
+    # Calculamos los precios normalizados de los activos
     normalized_prices = df / df.iloc[0] * 100
     return returns, cumulative_returns, normalized_prices
 
@@ -27,6 +30,7 @@ def calcular_rendimiento_ventana(returns, window):
 
 # Nuevas funciones para VaR
 def calcular_var(returns, confidence=0.95):
+    # Usamos el cuantil del nivel de confianza deseado para calcular el VaR paramétrico
     VaR = returns.quantile(1 - confidence)
     return VaR
 
@@ -38,11 +42,17 @@ def calcular_var_ventana(returns, window):
 
 # Función para calcular el VaR usando el método de Montecarlo
 def calcular_var_mc(returns, num_simulaciones=100000, nivel_confianza=0.95):
+    # Calculamos la media
     media = np.mean(returns)
-    desviacion_estandar = np.std(returns)    
+    # Calculamos desviación estándar
+    desviacion_estandar = np.std(returns)
+    # Realizamos las simulaciones de Monte Carlo usando la media y la desviacion estándar de cada activo
     simulaciones = np.random.normal(media, desviacion_estandar, num_simulaciones)
+    # Ordenamos las simulaciones
     simulaciones_ordenadas = np.sort(simulaciones)
+    # Definimos el nivel de confianza que tendrá nuestro VaR
     percentil = int((1 - nivel_confianza) * num_simulaciones)
+    # Calculamos el VaR viendo cuántas veces las simulaciones caen en el nivel de confianza que queremos
     var = simulaciones_ordenadas[percentil]
     return var
 
@@ -316,19 +326,23 @@ else:
         with tab3:
             st.header("Marco Teórico")
             st.write("""
-    Aquí puedes incluir el texto de tu marco teórico. Por ejemplo:
-    
-    **Análisis de Activos Individuales**
-    
-    El análisis de activos individuales es crucial para entender el comportamiento de cada activo en el mercado. Utilizamos varias métricas como el VaR (Valor en Riesgo) para evaluar el riesgo asociado con cada activo. El VaR histórico y el VaR basado en simulaciones de Montecarlo son dos métodos comunes para calcular este riesgo.
-    
-    **VaR Histórico**
-    
-    El VaR histórico se calcula utilizando los retornos históricos del activo. Este método asume que los retornos futuros seguirán una distribución similar a la de los retornos pasados.
-    
-    **VaR Montecarlo**
-    
-    El VaR basado en Montecarlo utiliza simulaciones para generar posibles escenarios futuros de precios y calcular el riesgo asociado. Este método es más flexible ya que no depende de los retornos históricos.
-    
-    Puedes agregar más secciones y detalles según sea necesario.
+            Abstract – El VaR o Valor en Riesgo, es una técnica estadística que usamos para medir el riesgo de pérdida que tiene un portafolio de inversión. En general, se expresa en términos de porcentaje o valor monetario.
+Este modelo nos ayuda a cuantificar la máxima pérdida que puede experimentar nuestro portafolio en un horizonte de tiempo, con un nivel de confianza determinado. La importancia del VaR radica en la visión cuantificable que tenemos del riesgo, pues al conocer el peor escenario de pérdidas, se pueden tomar mejores decisiones sobre la asignación y diversificación de activos. 
+Este modelo de riesgo es utilizado por varias instituciones financieras y reguladoras para evitar escenarios como el de la crisis económica del 2008. Resultados como la Teoría de Markowitz sobre la diversificación de portafolios, van de la mano con este concepto, pues al estudiar la relación riesgo-rendimiento nos permiten optimizar ganancias de acuerdo con un nivel de riesgo.
+I.	Introducción
+En un contexto de inversiones es importante cuantificar el riesgo ya que éste no puede ser eliminado en su totalidad y se permea con cada decisión que tomamos, pero ¿Qué es el riesgo?
+El riesgo es visto como una métrica de posibilidad o amenaza de pérdidas monetarias en una inversión durante un tiempo específico a un nivel de confianza. El VaR es la métrica que cuantifica el nivel de riesgo de éstas pérdidas durante un período de tiempo específico y a un nivel de confianza.
+Matemáticamente hablando, calcular el riesgo es calcular la desviación estándar de los rendimientos, mientras que el VaR es el percentil 1-α de la distribución de pérdidas. Así, el VaR al 100(1- α)% representa la pérdida máxima esperada con probabilidad de 1- α.
+En general, esta métrica se expresa en términos de porcentaje o de valor monetario, lo que significa que proporciona una estimación de cuánto sería la pérdida máxima o el porcentaje de pérdida con relación al valor total de la inversión.
+-	Tipos de VaR
+Existen distintos métodos para calcular el VaR, entre los que podemos destacar:
+o	VaR paramétrico: También conocido como VaR por covarianza. Se basa en la distribución de rendimientos de los activos. Usamos estadísticas históricas para estimar parámetros como la media y la desviación estándar y el VaR se calcula asumiendo que los rendimientos siguen una distribución normal o alguna otra esécífica.
+o	Método histórico: Se basa únicamente en datos pasados. Se toma un período histórico y se ordena de menor a mayor. El VaR se calcula seleccionando el rendimiento que se encuentra en el percentil α, donde α es el nivel de confianza.
+o	Simulación por Monte Carlo: tiene un enfoque computacional que modela miles de trayectorias posibles para los rendimientos de una cartera. Se usan las estadísticas históricas para modelar correlaciones entre activos. Luego, al ejecutar las simulaciones, el VaR se calcula observando cuántas veces la cartera tiene pérdidas que superan el umbral de VaR.
+
+II.	Justificación.
+En este proyecto, veremos el funcionamiento de este último y lo compararemos con el VaR paramétrico, para observar la diferencia entre estos cálculos y así tener 2 visiones diferentes del riesgo que acompaña a nuestra inversión. La importancia radica en apoyarnos en la toma de decisiones para crear una cartera de inversión que tenga riesgo mínimo. 
+De igual forma sabremos cuál es nuestra tolerancia al riesgo, ya que cada activo tiene un valor de VaR, pero al momento de seleccionar varios activos, el VaR cambia, lo que nos permitirá ajustar nuestras decisiones sobre qué activos queremos comprar. 
+Esta es una herramienta fundamental al momento de crear portafolios en el ambiente de renta variable, donde los rendimientos suelen ser más volátiles.
+
     """)
