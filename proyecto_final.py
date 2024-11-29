@@ -332,7 +332,7 @@ Este modelo nos ayuda a cuantificar la máxima pérdida que puede experimentar n
 
 Este modelo de riesgo es utilizado por varias instituciones financieras y reguladoras para evitar escenarios como el de la crisis económica del 2008. Resultados como la Teoría de Markowitz sobre la diversificación de portafolios, van de la mano con este concepto, pues al estudiar la relación riesgo-rendimiento nos permiten optimizar ganancias de acuerdo con un nivel de riesgo.
 
-I.	Introducción
+  I.	Introducción
 
 En un contexto de inversiones es importante cuantificar el riesgo ya que éste no puede ser eliminado en su totalidad y se permea con cada decisión que tomamos, pero ¿Qué es el riesgo?
 
@@ -352,7 +352,7 @@ o	Método histórico: Se basa únicamente en datos pasados. Se toma un período 
 
 o	Simulación por Monte Carlo: tiene un enfoque computacional que modela miles de trayectorias posibles para los rendimientos de una cartera. Se usan las estadísticas históricas para modelar correlaciones entre activos. Luego, al ejecutar las simulaciones, el VaR se calcula observando cuántas veces la cartera tiene pérdidas que superan el umbral de VaR.
 
-II.	Justificación.
+  II.	Justificación.
 
 En este proyecto, veremos el funcionamiento de este último y lo compararemos con el VaR paramétrico, para observar la diferencia entre estos cálculos y así tener 2 visiones diferentes del riesgo que acompaña a nuestra inversión. La importancia radica en apoyarnos en la toma de decisiones para crear una cartera de inversión que tenga riesgo mínimo. 
 
