@@ -327,22 +327,37 @@ else:
             st.header("Marco Teórico")
             st.write("""
             Abstract – El VaR o Valor en Riesgo, es una técnica estadística que usamos para medir el riesgo de pérdida que tiene un portafolio de inversión. En general, se expresa en términos de porcentaje o valor monetario.
+
 Este modelo nos ayuda a cuantificar la máxima pérdida que puede experimentar nuestro portafolio en un horizonte de tiempo, con un nivel de confianza determinado. La importancia del VaR radica en la visión cuantificable que tenemos del riesgo, pues al conocer el peor escenario de pérdidas, se pueden tomar mejores decisiones sobre la asignación y diversificación de activos. 
+
 Este modelo de riesgo es utilizado por varias instituciones financieras y reguladoras para evitar escenarios como el de la crisis económica del 2008. Resultados como la Teoría de Markowitz sobre la diversificación de portafolios, van de la mano con este concepto, pues al estudiar la relación riesgo-rendimiento nos permiten optimizar ganancias de acuerdo con un nivel de riesgo.
+
 I.	Introducción
+
 En un contexto de inversiones es importante cuantificar el riesgo ya que éste no puede ser eliminado en su totalidad y se permea con cada decisión que tomamos, pero ¿Qué es el riesgo?
+
 El riesgo es visto como una métrica de posibilidad o amenaza de pérdidas monetarias en una inversión durante un tiempo específico a un nivel de confianza. El VaR es la métrica que cuantifica el nivel de riesgo de éstas pérdidas durante un período de tiempo específico y a un nivel de confianza.
+
 Matemáticamente hablando, calcular el riesgo es calcular la desviación estándar de los rendimientos, mientras que el VaR es el percentil 1-α de la distribución de pérdidas. Así, el VaR al 100(1- α)% representa la pérdida máxima esperada con probabilidad de 1- α.
+
 En general, esta métrica se expresa en términos de porcentaje o de valor monetario, lo que significa que proporciona una estimación de cuánto sería la pérdida máxima o el porcentaje de pérdida con relación al valor total de la inversión.
+
 -	Tipos de VaR
+
 Existen distintos métodos para calcular el VaR, entre los que podemos destacar:
+
 o	VaR paramétrico: También conocido como VaR por covarianza. Se basa en la distribución de rendimientos de los activos. Usamos estadísticas históricas para estimar parámetros como la media y la desviación estándar y el VaR se calcula asumiendo que los rendimientos siguen una distribución normal o alguna otra esécífica.
+
 o	Método histórico: Se basa únicamente en datos pasados. Se toma un período histórico y se ordena de menor a mayor. El VaR se calcula seleccionando el rendimiento que se encuentra en el percentil α, donde α es el nivel de confianza.
+
 o	Simulación por Monte Carlo: tiene un enfoque computacional que modela miles de trayectorias posibles para los rendimientos de una cartera. Se usan las estadísticas históricas para modelar correlaciones entre activos. Luego, al ejecutar las simulaciones, el VaR se calcula observando cuántas veces la cartera tiene pérdidas que superan el umbral de VaR.
 
 II.	Justificación.
+
 En este proyecto, veremos el funcionamiento de este último y lo compararemos con el VaR paramétrico, para observar la diferencia entre estos cálculos y así tener 2 visiones diferentes del riesgo que acompaña a nuestra inversión. La importancia radica en apoyarnos en la toma de decisiones para crear una cartera de inversión que tenga riesgo mínimo. 
+
 De igual forma sabremos cuál es nuestra tolerancia al riesgo, ya que cada activo tiene un valor de VaR, pero al momento de seleccionar varios activos, el VaR cambia, lo que nos permitirá ajustar nuestras decisiones sobre qué activos queremos comprar. 
+
 Esta es una herramienta fundamental al momento de crear portafolios en el ambiente de renta variable, donde los rendimientos suelen ser más volátiles.
 
     """)
