@@ -326,7 +326,9 @@ else:
         with tab3:
             st.header("Marco Teórico")
             st.write("""
-            Abstract – El VaR o Valor en Riesgo, es una técnica estadística que usamos para medir el riesgo de pérdida que tiene un portafolio de inversión. En general, se expresa en términos de porcentaje o valor monetario.
+            **Abstract** 
+            
+El VaR o Valor en Riesgo, es una técnica estadística que usamos para medir el riesgo de pérdida que tiene un portafolio de inversión. En general, se expresa en términos de porcentaje o valor monetario.
 
 Este modelo nos ayuda a cuantificar la máxima pérdida que puede experimentar nuestro portafolio en un horizonte de tiempo, con un nivel de confianza determinado. La importancia del VaR radica en la visión cuantificable que tenemos del riesgo, pues al conocer el peor escenario de pérdidas, se pueden tomar mejores decisiones sobre la asignación y diversificación de activos. 
 
